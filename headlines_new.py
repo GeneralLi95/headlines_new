@@ -11,7 +11,7 @@ app = Flask(__name__)
 RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
             "netease": "http://news.163.com/special/00011K6L/rss_newsattitude.xml",
             "songshuhui": "http://songshuhui.net/feed",
-            "ifeng": "http://news.ifeng.com/rss/index.xml"
+            "douban": "http://www.douban.com/feed/review/book"
             }
 
 
@@ -19,10 +19,8 @@ RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
 
 @app.route('/<publication>')
 def get_news(publication = "songshuhui"):
-    feed =feedparser.parse(RSS_FEED[publication])
-    first_content = feed['entries'][0]
-
-    return render_template('home.html', article = first_content)
+    feed = feedparser.parse(RSS_FEED[publication])
+    return render_template('home.html', articles = feed['entries'])
 
 
 
