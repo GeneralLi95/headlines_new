@@ -1,4 +1,4 @@
-本repo是对https://github.com/lalor/headlines的复现。
+本repo是对https://github.com/lalor/headlines 的复现。
 
 花了两天时间，亲自手打了里面所有代码，加强了对Flask框架的理解，非常感谢原作者。
 
