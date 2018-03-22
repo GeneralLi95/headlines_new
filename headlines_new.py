@@ -2,12 +2,16 @@
 #  __future__  模块是为Python2.x提供的，目的是在2.x中可以导入3.x的用法。
 #  本代码直接用3.x写的，因此可以不需要这个模块
 
+import datetime
 import requests
 import feedparser   #parse 解析 #parser解析器
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 
 app = Flask(__name__)
+
+DEFAULTS = {'city': '北京',
+            'publication': 'songshuhui'}
 
 RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
             "netease": "http://news.163.com/special/00011K6L/rss_newsattitude.xml",
@@ -20,21 +24,32 @@ WEATHERS = {"北京": 101010100,
             "广州": 101280101,
             "深圳": 101280601}
 
+
+def get_value_with_fallback(key):
+    if request.args.get(key):
+        return request.args.get(key)
+    if request.cookies.get(key):
+        return request.cookies.get(key)
+    return DEFAULTS[key]   #这是当前两个if 条件都不符合时return默认值。
+#cookie   web 浏览器创建的存储在和用户本地终端的文件，其中包含用户的个人信息，可提高浏览器加载速度。
+
+
 @app.route('/')
 
 def home():
-    query = request.args.get("publication")
-    if not query or query.lower() not in RSS_FEED:
-        publication = "songshuhui"
-    else:
-        publication = query.lower()
-
-    city = request.args.get('city', '北京')
+    publication = get_value_with_fallback('publication')
+    city = get_value_with_fallback('city')
 
     weather = get_weather(city)
     articles = get_news(publication)
 
-    return render_template('home.html', articles=articles, weather=weather)
+    response = make_response(render_template('home.html', articles=articles, weather=weather))
+
+    expires = datetime.datetime.now() + datetime.timedelta(days=365)
+    response.set_cookie('publication', publication, expires=expires)
+    response.set_cookie('city', city, expires=expires)
+
+    return response
 
 
 def get_news(publication):
