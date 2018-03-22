@@ -2,23 +2,37 @@
 #  __future__  模块是为Python2.x提供的，目的是在2.x中可以导入3.x的用法。
 #  本代码直接用3.x写的，因此可以不需要这个模块
 
-import feedparser
+import feedparser   #parse 解析 #parser解析器
 
 from flask import Flask
 
 app = Flask(__name__)
 
-ZHIHU_FEED = "http://www.zhihu.com/rss"
+RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
+            "netease": "http://news.163.com/special/00011K6L/rss_newsattitude.xml",
+            "songshuhui": "http://songshuhui.net/feed",
+            "ifeng": "http://news.ifeng.com/rss/index.xml"
+            }
 
 
 @app.route('/')
-def get_news():
 
-    feed = feedparser.parse(ZHIHU_FEED)  #parse 解析 #parser解析器
+
+@app.route('/zhihu')   #在浏览器访问时，地址为localhost:5000/zhihu
+def zhihu():
+    return get_news('zhihu')
+
+@app.route('/netease')  #localhost:5000/netease
+def netease():
+    return get_news('netease')
+
+
+def get_news(publication):
+    feed =feedparser.parse(RSS_FEED[publication])
     first_content = feed['entries'][0]
     html_format = """
     <html><body>
-        <h1>知乎头条</h1>
+        <h1>头条</h1>
         <b>{0}</b><br/>
         <i>{1}</i><br/>
         <p>{2}</p><br/>
