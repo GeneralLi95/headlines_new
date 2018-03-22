@@ -18,7 +18,7 @@ RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
 @app.route('/')
 
 @app.route('/<publication>')
-def get_news(publication = "songshuhui"):
+def get_news(publication = "zhihu"):
     feed = feedparser.parse(RSS_FEED[publication])
     return render_template('home.html', articles = feed['entries'])
 
