@@ -15,7 +15,7 @@ RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
             }
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 
 def get_news():
     query = request.args.get("publication")
