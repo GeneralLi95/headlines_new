@@ -4,7 +4,7 @@
 
 import feedparser   #parse 解析 #parser解析器
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -17,8 +17,13 @@ RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
 
 @app.route('/')
 
-@app.route('/<publication>')
-def get_news(publication = "zhihu"):
+def get_news():
+    query = request.args.get("publication")
+    if not query or query.lower() not in RSS_FEED:
+        publication = "songshuhui"
+    else:
+        publication = query.lower()
+
     feed = feedparser.parse(RSS_FEED[publication])
     return render_template('home.html', articles = feed['entries'])
 
