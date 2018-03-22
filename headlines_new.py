@@ -21,10 +21,8 @@ RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
 def get_news(publication = "songshuhui"):
     feed =feedparser.parse(RSS_FEED[publication])
     first_content = feed['entries'][0]
-    entry = dict(title = first_content.get('title'),
-                 published = first_content.get('published'),
-                 summary = first_content.get('summary'))
-    return render_template('home.html', **entry)
+
+    return render_template('home.html', article = first_content)
 
 
 
