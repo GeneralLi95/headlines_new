@@ -6,11 +6,19 @@
 </head>
 <body>
         <h1>头条</h1>
-        <form action="/", method="GET">
-            <input type="text" name="publication" placeholder="search" />
+        <h2>当前温度</h2>
+        <form>
+            <input type="text" name="city" placeholder="weather search" />
             <input type="submit" value="Submit" />
         </form>
 
+        <p>城市： <b>{{ weather.city }}</b></p>
+        <p>{{ weather.description }}|{{ weather.temperature }}&#8451;</p>
+
+        <form>
+            <input type="text" name="publication" placeholder="search" />
+            <input type="submit" value="Submit" />
+        </form>
         {% for article in articles %}
 
             <b><a href="{{ article.link }}">{{ article.title }}</a></b><br />
