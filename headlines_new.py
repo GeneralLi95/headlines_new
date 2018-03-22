@@ -17,17 +17,8 @@ RSS_FEED = {"zhihu": "http://www.zhihu.com/rss",
 
 @app.route('/')
 
-
-@app.route('/zhihu')   #在浏览器访问时，地址为localhost:5000/zhihu
-def zhihu():
-    return get_news('zhihu')
-
-@app.route('/netease')  #localhost:5000/netease
-def netease():
-    return get_news('netease')
-
-
-def get_news(publication):
+@app.route('/<publication>')
+def get_news(publication = "songshuhui"):
     feed =feedparser.parse(RSS_FEED[publication])
     first_content = feed['entries'][0]
     html_format = """
