@@ -1,10 +1,10 @@
-#from __future__ import unicode_literals
+# from __future__ import unicode_literals
 #  __future__  模块是为Python2.x提供的，目的是在2.x中可以导入3.x的用法。
 #  本代码直接用3.x写的，因此可以不需要这个模块
 
 import datetime
 import requests
-import feedparser   #parse 解析 #parser解析器
+import feedparser  # parse 解析 #parser解析器
 
 from flask import Flask, render_template, request, make_response
 
@@ -30,12 +30,13 @@ def get_value_with_fallback(key):
         return request.args.get(key)
     if request.cookies.get(key):
         return request.cookies.get(key)
-    return DEFAULTS[key]   #这是当前两个if 条件都不符合时return默认值。
-#cookie   web 浏览器创建的存储在和用户本地终端的文件，其中包含用户的个人信息，可提高浏览器加载速度。
+    return DEFAULTS[key]  # 这是当前两个if 条件都不符合时return默认值。
+
+
+# cookie   web 浏览器创建的存储在和用户本地终端的文件，其中包含用户的个人信息，可提高浏览器加载速度。
 
 
 @app.route('/')
-
 def home():
     publication = get_value_with_fallback('publication')
     city = get_value_with_fallback('city')
@@ -68,9 +69,6 @@ def get_weather(city):
     return dict(city=data['city'], temperature=data['temp'], description=data['WD'])
 
 
-
 if __name__ == '__main__':
     app.debug = True
-    app.run(host = '0.0.0.0', port = 5000)
-
-
+    app.run(host='0.0.0.0', port=5000)
